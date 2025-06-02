@@ -76,16 +76,14 @@ Download Genome Reference (for DNA only)
 To perform reference-anchored basecalling and alignment with Dorado on DNA reads, download a reference genome in FASTA format:
 
 ```bash
-mkdir -p ${INPUT_DIR}/fasta
-
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz \
-  -O - | gunzip -c > ${INPUT_DIR}/fasta/genome.fa
+  -O - | gunzip -c > ${INPUT_DIR}/genome_fasta.fa
 
-samtools faidx ${INPUT_DIR}/fasta/genome.fa
+samtools faidx ${INPUT_DIR}/genome_fasta.fa
 ```
 
 ```bash
-git clone https://github.com/<your-user>/DeepMod2_modificados1.git ${INPUT_DIR}/DeepMod2
+git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
 ```
 Download the basecaller for your platform (macOS, Linux...):
 
