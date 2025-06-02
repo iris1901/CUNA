@@ -10,36 +10,53 @@ This pipeline is specifically designed for studying ancient DNA samples, where c
 ## Project Structure
 ```
 CUNA/
-├── raw_data/
-│ ├── dna.pod5/
-│ ├── rna.pod5/
-│ ├── dna.bam/
-│ ├── rna.bam/
-│ ├── genome_fasta.fa/
 ├── simulate_scripts/
+│ ├── dna.pod5
+│ ├── rna.pod5
+│ ├── bam_files/
+│     └── rna.bam
+│     └── dna.bam
+│     └── dna_sorted.bam
+│     └── dna_sorted.bam.bai
 │ ├── simulate_deamination_signals.py
 │ ├── simulate_deamination_signals_verif.py
-│     └── mixed_list/
-│     └── deamination.pod5/
-│     └── log.txt/
+│ ├── output/
+│     └── mixed_list
+│     └── deamination.pod5
+│     └── log.txt
 ├── train_models/
 │ ├── generate_features.py
+│ ├── train_models.py
+│ ├── utils.py
+│ ├── data/
+|     └── genome_fasta.fa
+│     └── genome_fasta.fai
+│     └── bam_files/
+|         └── dna.bam
+│     └── raw_data/
+|         └── signal_files/
+|             └── deamination.pod5
+│         └── label_files/
+|             └── mixed_list
+│ ├── features_output/
 │     └── args
 │     └── output.features.X.npz
-│ ├── utils.py
-│ ├── train_models.py
+│ ├── train_output/
 │     └── bilstm/
 │     └── transformer/
 │     └── args
 │     └── model.log
 ├── test/
+│ ├── data/
+│     └── new.pod5
+│     └── new.bam
 │ ├── utils.py
 │ ├── detect.py
+│ ├── test_output/
 │     └── output.bam
 │     └── output.per_read
 │     └── output.per_site
 │     └── args
-└── README.md
 ```
 
 ---
