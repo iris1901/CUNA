@@ -8,7 +8,7 @@ This pipeline is specifically designed for studying ancient DNA samples, where c
 </p>
 
 ## Project Structure
-
+```
 CUNA/
 ├── raw_data/
 │ ├── dna.pod5/
@@ -40,7 +40,7 @@ CUNA/
 │     └── output.per_site
 │     └── args
 └── README.md
-
+```
 
 ---
 
