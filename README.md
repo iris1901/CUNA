@@ -1,5 +1,5 @@
 # CUNA
-CUNA (Cytosine Uracil Neural Algorithm) is a deep learning-based pipeline for detecting cytosine deamination events (C→U) in ancient DNA (aDNA) sequenced with Oxford Nanopore technology. It extends the DeepMod2 (https://github.com/WGLab/DeepMod2) framework by introducing preprocessing steps for signal simulation and modification, and supports training and inference using BiLSTM and Transformer models.
+CUNA (Cytosine Uracil Neural Algorithm) is a deep learning-based pipeline for detecting cytosine deamination events (C→U) in ancient DNA sequenced with Oxford Nanopore technology. It extends the [DeepMod2](https://github.com/WGLab/DeepMod2) framework by introducing preprocessing steps for signal simulation and modification, and supports training and inference using BiLSTM and Transformer models.
 
 This pipeline is specifically designed for studying ancient DNA samples, where cytosines often spontaneously deaminate to uracils due to age-related chemical damage.
 
@@ -72,16 +72,6 @@ micromamba activate cuna_env
 
 ##   Download Software Packges
 
-Download Genome Reference (for DNA only)
-To perform reference-anchored basecalling and alignment with Dorado on DNA reads, download a reference genome in FASTA format:
-
-```bash
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz \
-  -O - | gunzip -c > ${INPUT_DIR}/genome_fasta.fa
-
-samtools faidx ${INPUT_DIR}/genome_fasta.fa
-```
-
 ```bash
 # Install CUNA
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
@@ -104,11 +94,30 @@ ${INPUT_DIR}/dorado-0.5.3-osx-arm64/bin/dorado download --model rna004_130bps_ha
 
 To begin, we perform basecalling on two raw signal datasets:
 
-A DNA POD5 file generated from DeepMod2 (https://github.com/WGLab/DeepMod2/files/14368872/sample.pod5.tar.gz) of modern DNA using an R10.4.1 flow cell.
-
-An RNA BLOW5 file publicly available from nanoCEM (https://github.com/lrslab/nanoCEM/tree/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5), which we converted to POD5 for compatibility.
+- A DNA POD5 file generated from DeepMod2 of modern DNA using an R10.4.1 flow cell.
+- An RNA BLOW5 file publicly available from nanoCEM (https://github.com/lrslab/nanoCEM/tree/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5), which we converted to POD5 for compatibility.
 
 We then use Dorado for basecalling, with --emit-moves to obtain alignment between signal and sequence.
+
+```bash
+# DNA POD5
+wget -qO- https://github.com/WGLab/DeepMod2/files/14368872/sample.pod5.tar.gz| tar xzf - -C ${INPUT_DIR}/nanopore_raw_data
+
+# RNA BLOW5
+wget https://github.com/lrslab/nanoCEM/raw/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5 \
+  -O ${INPUT_DIR}/pod5/rna.blow5
+
+# Convert BLOW5 to POD5
+pip install blue-crab
+blue-crab s2p rna.blow5 -o rna.pod5
+
+# Genome Reference (for DNA only)
+# Before DNA basecalling, we must download a reference genome for anchored alignment:
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz -O -| gunzip -c > ${INPUT_DIR}/GRCh38.fa
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai -O ${INPUT_DIR}/GRCh38.fa.fai
+
+samtools faidx ${INPUT_DIR}/genome_fasta.fa
+```
 
 RNA reads are basecalled without alignment, using the Dorado RNA model:
 ```bash
@@ -143,7 +152,7 @@ python estatistics.py \
 
 Since no real ancient DNA POD5 is available, we **simulate uracil-induced damage** by:
 
-- Extracting U signals from RNA POD5 (representing U).
+- Extracting U signals from RNA POD5.
 - Inserting those signals in place of cytosines in DNA POD5 at randomly chosen sites.
 - Respecting empirical estimates of deamination rates (~3–10% C→U).
 - Maintaining total signal length to preserve BAM compatibility.
