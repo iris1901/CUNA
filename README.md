@@ -70,7 +70,7 @@ micromamba create -n cuna_env -f requirements.yml
 micromamba activate cuna_env
 ```
 
-##   Software and Dordado Basecaller
+##   Download Software Packges
 
 Download Genome Reference (for DNA only)
 To perform reference-anchored basecalling and alignment with Dorado on DNA reads, download a reference genome in FASTA format:
@@ -83,14 +83,21 @@ samtools faidx ${INPUT_DIR}/genome_fasta.fa
 ```
 
 ```bash
+# Install CUNA
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
 ```
 Download the basecaller for your platform (macOS, Linux...):
 
 ```bash
+# For Linux:
 wget -qO- https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.5.3-linux-x64.tar.gz | tar xzf - -C ${INPUT_DIR}
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado download --model  dna_r10.4.1_e8.2_400bps_hac@v4.3.0 --directory ${INPUT_DIR}/dorado-0.5.3-linux-x64/models/
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado download --model  rna004_130bps_hac@v5.2.0 --directory ${INPUT_DIR}/dorado-0.5.3-linux-x64/models/
+
+# For macOS (Apple Silicon):
+wget -qO- https://cdn.oxfordnanoportal.com/software/analysis/dorado-0.5.3-osx-arm64.tar.gz | tar xzf - -C ${INPUT_DIR}
+${INPUT_DIR}/dorado-0.5.3-osx-arm64/bin/dorado download --model dna_r10.4.1_e8.2_400bps_hac@v4.3.0 --directory ${INPUT_DIR}/dorado-0.5.3-osx-arm64/models/
+${INPUT_DIR}/dorado-0.5.3-osx-arm64/bin/dorado download --model rna004_130bps_hac@v5.2.0 --directory ${INPUT_DIR}/dorado-0.5.3-osx-arm64/models/
 ```
 
 ## Step 0: Basecalling and Alignment (DNA + RNA)
