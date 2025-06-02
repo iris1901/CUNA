@@ -95,7 +95,7 @@ ${INPUT_DIR}/dorado-0.5.3-osx-arm64/bin/dorado download --model rna004_130bps_ha
 To begin, we perform basecalling on two raw signal datasets:
 
 - A DNA POD5 file generated from DeepMod2 of modern DNA using an R10.4.1 flow cell.
-- An RNA BLOW5 file publicly available from nanoCEM (https://github.com/lrslab/nanoCEM/tree/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5), which we converted to POD5 for compatibility.
+- An RNA BLOW5 file publicly available from nanoCEM, which we converted to POD5 for compatibility.
 
 We then use Dorado for basecalling, with --emit-moves to obtain alignment between signal and sequence.
 
@@ -115,8 +115,6 @@ blue-crab s2p rna.blow5 -o rna.pod5
 # Before DNA basecalling, we must download a reference genome for anchored alignment:
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz -O -| gunzip -c > ${INPUT_DIR}/GRCh38.fa
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai -O ${INPUT_DIR}/GRCh38.fa.fai
-
-samtools faidx ${INPUT_DIR}/genome_fasta.fa
 ```
 
 RNA reads are basecalled without alignment, using the Dorado RNA model:
@@ -124,6 +122,7 @@ RNA reads are basecalled without alignment, using the Dorado RNA model:
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --model rna004_130bps_hac@v5.2.0 \
   --emit-moves \
+  --recursive \
   ${INPUT_DIR}/pod5/rna.pod5 > ${OUTPUT_DIR}/bam/rna.bam
 ```
 For DNA, we perform reference-anchored basecalling and alignment:
@@ -131,6 +130,7 @@ For DNA, we perform reference-anchored basecalling and alignment:
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --model dna_r10.4.1_e8.2_400bps_hac@v4.3.0 \
   --emit-moves \
+  --recursive \
   --reference ${INPUT_DIR}/fasta/genome.fa \
   ${INPUT_DIR}/pod5/dna.pod5 > ${OUTPUT_DIR}/bam/dna.bam
 ```
@@ -161,7 +161,11 @@ Since no real ancient DNA POD5 is available, we **simulate uracil-induced damage
 ### Example Command
 
 ```bash
-python simulate_deamination_signals.py   --pod5_dna /Users/iris/Desktop/transf_U_to_C/DNA_can.pod5   --bam_dna /Users/iris/Desktop/transf_U_to_C/bam_files/DNA.bam   --pod5_rna /Users/iris/Desktop/transf_U_to_C/RNA.pod5   --bam_rna /Users/iris/Desktop/transf_U_to_C/bam_files/RNA.bam
+python simulate_deamination_signals.py \
+  --pod5_dna /Users/iris/Desktop/transf_U_to_C/DNA_can.pod5 \
+  --bam_dna /Users/iris/Desktop/transf_U_to_C/bam_files/DNA.bam \
+  --pod5_rna /Users/iris/Desktop/transf_U_to_C/RNA.pod5 \
+  --bam_rna /Users/iris/Desktop/transf_U_to_C/bam_files/RNA.bam \
 ```
 (Optional) To ensure that uracil signals were inserted correctly and signal lengths were preserved, you can use an alternative version of the simulation script that includes automatic verification steps
 
