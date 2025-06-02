@@ -1,0 +1,22 @@
+name: dm2_adna
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - numpy
+  - pysam
+  - python>=3.8
+  - pytorch
+  - h5py
+  - tqdm
+  - numba
+  - ont-fast5-api
+  - samtools
+  - matplotlib
+  - pandas
+  - scipy
+  - pip
+  - pip:
+    - pod5
+    - scikit-learn
