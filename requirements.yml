@@ -2,7 +2,6 @@ name: dm2_adna
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - numpy
   - pysam
@@ -17,6 +16,7 @@ dependencies:
   - pandas
   - scipy
   - pip
+  - scikit-learn
   - pip:
     - pod5
-    - scikit-learn
+
