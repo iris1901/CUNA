@@ -41,8 +41,8 @@ CUNA/
 │     └── model.log
 ├── test/
 │ ├── test_data/
-│     └── new.pod5
-│     └── new.bam
+│     └── test.pod5
+│     └── test.bam
 │ ├── CUNA.py
 │ ├── utils.py
 │ ├── detect.py
