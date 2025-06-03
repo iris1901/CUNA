@@ -1,0 +1,556 @@
+mixed_training_dataset: ['/Users/iris/Desktop/aDNA_modificados2_sinref/mod/features/mixed/']
+validation_type: split
+validation_fraction: 0.2
+validation_dataset: None
+prefix: model
+weights: auto
+model_save_path: /Users/iris/Desktop/aDNA_modificados2_sinref/mod/models/mixed_bilstm
+epochs: 40
+batch_size: 512
+retrain: None
+fc_type: middle
+model_type: bilstm
+num_layers: 2
+dim_feedforward: 256
+num_fc: 128
+embedding_dim: 16
+embedding_type: one_hot
+pe_dim: 16
+pe_type: fixed
+nhead: 4
+lr: 0.0005
+l2_coef: 0.0001
+early_stopping: 0
+seed: 0
+
+# Parameters=2199809
+BiLSTM(
+  (emb): ReadEmbed(
+    (read_emb): OneHotEncode()
+  )
+  (bilstm): LSTM(14, 256, num_layers=2, batch_first=True, bidirectional=True)
+  (classifier): ClassifierMiddle(
+    (fc): Linear(in_features=512, out_features=128, bias=True)
+    (out): Linear(in_features=128, out_features=1, bias=True)
+  )
+)
+
+Epoch 1: #Train=10031  #Test=2508  Time=1.2169
+Training  Loss:  Total: 0.5508
+Training Accuracy:  Total: 0.5828
+Training Precision:  Total: 0.6344
+Training Recall:  Total: 0.7128
+Training F1:  Total: 0.6713
+
+Testing  Loss:  Total: 0.5104
+Testing Accuracy:  Total: 0.6786
+Testing Precision:  Total: 0.7788
+Testing Recall:  Total: 0.6458
+Testing F1:  Total: 0.7061
+
+Epoch 2: #Train=10031  #Test=2508  Time=0.8620
+Training  Loss:  Total: 0.4665
+Training Accuracy:  Total: 0.6998
+Training Precision:  Total: 0.7777
+Training Recall:  Total: 0.6969
+Training F1:  Total: 0.7351
+
+Testing  Loss:  Total: 0.4311
+Testing Accuracy:  Total: 0.7436
+Testing Precision:  Total: 0.7712
+Testing Recall:  Total: 0.8119
+Testing F1:  Total: 0.7910
+
+Epoch 3: #Train=10031  #Test=2508  Time=0.8604
+Training  Loss:  Total: 0.4317
+Training Accuracy:  Total: 0.7401
+Training Precision:  Total: 0.7860
+Training Recall:  Total: 0.7766
+Training F1:  Total: 0.7813
+
+Testing  Loss:  Total: 0.4100
+Testing Accuracy:  Total: 0.7305
+Testing Precision:  Total: 0.8691
+Testing Recall:  Total: 0.6464
+Testing F1:  Total: 0.7414
+
+Epoch 4: #Train=10031  #Test=2508  Time=0.8614
+Training  Loss:  Total: 0.4041
+Training Accuracy:  Total: 0.7564
+Training Precision:  Total: 0.8228
+Training Recall:  Total: 0.7550
+Training F1:  Total: 0.7874
+
+Testing  Loss:  Total: 0.3708
+Testing Accuracy:  Total: 0.7763
+Testing Precision:  Total: 0.8758
+Testing Recall:  Total: 0.7292
+Testing F1:  Total: 0.7958
+
+Epoch 5: #Train=10031  #Test=2508  Time=0.8622
+Training  Loss:  Total: 0.3593
+Training Accuracy:  Total: 0.7956
+Training Precision:  Total: 0.8560
+Training Recall:  Total: 0.7912
+Training F1:  Total: 0.8223
+
+Testing  Loss:  Total: 0.3582
+Testing Accuracy:  Total: 0.7711
+Testing Precision:  Total: 0.9208
+Testing Recall:  Total: 0.6751
+Testing F1:  Total: 0.7791
+
+Epoch 6: #Train=10031  #Test=2508  Time=0.8614
+Training  Loss:  Total: 0.3456
+Training Accuracy:  Total: 0.8008
+Training Precision:  Total: 0.8848
+Training Recall:  Total: 0.7665
+Training F1:  Total: 0.8214
+
+Testing  Loss:  Total: 0.3320
+Testing Accuracy:  Total: 0.8114
+Testing Precision:  Total: 0.8490
+Testing Recall:  Total: 0.8326
+Testing F1:  Total: 0.8407
+
+Epoch 7: #Train=10031  #Test=2508  Time=0.8605
+Training  Loss:  Total: 0.3154
+Training Accuracy:  Total: 0.8237
+Training Precision:  Total: 0.8874
+Training Recall:  Total: 0.8075
+Training F1:  Total: 0.8456
+
+Testing  Loss:  Total: 0.3360
+Testing Accuracy:  Total: 0.7951
+Testing Precision:  Total: 0.9378
+Testing Recall:  Total: 0.7038
+Testing F1:  Total: 0.8041
+
+Epoch 8: #Train=10031  #Test=2508  Time=0.8616
+Training  Loss:  Total: 0.3219
+Training Accuracy:  Total: 0.8192
+Training Precision:  Total: 0.8930
+Training Recall:  Total: 0.7923
+Training F1:  Total: 0.8397
+
+Testing  Loss:  Total: 0.3490
+Testing Accuracy:  Total: 0.8106
+Testing Precision:  Total: 0.8261
+Testing Recall:  Total: 0.8652
+Testing F1:  Total: 0.8452
+
+Epoch 9: #Train=10031  #Test=2508  Time=0.8650
+Training  Loss:  Total: 0.2977
+Training Accuracy:  Total: 0.8364
+Training Precision:  Total: 0.9034
+Training Recall:  Total: 0.8132
+Training F1:  Total: 0.8559
+
+Testing  Loss:  Total: 0.2846
+Testing Accuracy:  Total: 0.8413
+Testing Precision:  Total: 0.9161
+Testing Recall:  Total: 0.8085
+Testing F1:  Total: 0.8590
+
+Epoch 10: #Train=10031  #Test=2508  Time=0.8613
+Training  Loss:  Total: 0.2859
+Training Accuracy:  Total: 0.8478
+Training Precision:  Total: 0.9040
+Training Recall:  Total: 0.8339
+Training F1:  Total: 0.8675
+
+Testing  Loss:  Total: 0.2983
+Testing Accuracy:  Total: 0.8289
+Testing Precision:  Total: 0.9400
+Testing Recall:  Total: 0.7625
+Testing F1:  Total: 0.8420
+
+Epoch 11: #Train=10031  #Test=2508  Time=0.8620
+Training  Loss:  Total: 0.2945
+Training Accuracy:  Total: 0.8405
+Training Precision:  Total: 0.9009
+Training Recall:  Total: 0.8237
+Training F1:  Total: 0.8606
+
+Testing  Loss:  Total: 0.2902
+Testing Accuracy:  Total: 0.8557
+Testing Precision:  Total: 0.8803
+Testing Recall:  Total: 0.8779
+Testing F1:  Total: 0.8791
+
+Epoch 12: #Train=10031  #Test=2508  Time=0.8602
+Training  Loss:  Total: 0.2728
+Training Accuracy:  Total: 0.8576
+Training Precision:  Total: 0.9114
+Training Recall:  Total: 0.8439
+Training F1:  Total: 0.8763
+
+Testing  Loss:  Total: 0.2851
+Testing Accuracy:  Total: 0.8604
+Testing Precision:  Total: 0.8671
+Testing Recall:  Total: 0.9053
+Testing F1:  Total: 0.8858
+
+Epoch 13: #Train=10031  #Test=2508  Time=0.8604
+Training  Loss:  Total: 0.2719
+Training Accuracy:  Total: 0.8564
+Training Precision:  Total: 0.9071
+Training Recall:  Total: 0.8465
+Training F1:  Total: 0.8758
+
+Testing  Loss:  Total: 0.2695
+Testing Accuracy:  Total: 0.8497
+Testing Precision:  Total: 0.9296
+Testing Recall:  Total: 0.8099
+Testing F1:  Total: 0.8656
+
+Epoch 14: #Train=10031  #Test=2508  Time=0.8524
+Training  Loss:  Total: 0.2694
+Training Accuracy:  Total: 0.8600
+Training Precision:  Total: 0.9116
+Training Recall:  Total: 0.8480
+Training F1:  Total: 0.8787
+
+Testing  Loss:  Total: 0.2669
+Testing Accuracy:  Total: 0.8656
+Testing Precision:  Total: 0.8985
+Testing Recall:  Total: 0.8739
+Testing F1:  Total: 0.8860
+
+Epoch 15: #Train=10031  #Test=2508  Time=0.8590
+Training  Loss:  Total: 0.2636
+Training Accuracy:  Total: 0.8623
+Training Precision:  Total: 0.9115
+Training Recall:  Total: 0.8524
+Training F1:  Total: 0.8810
+
+Testing  Loss:  Total: 0.2679
+Testing Accuracy:  Total: 0.8628
+Testing Precision:  Total: 0.9041
+Testing Recall:  Total: 0.8619
+Testing F1:  Total: 0.8825
+
+Epoch 16: #Train=10031  #Test=2508  Time=0.8628
+Training  Loss:  Total: 0.2713
+Training Accuracy:  Total: 0.8610
+Training Precision:  Total: 0.9034
+Training Recall:  Total: 0.8594
+Training F1:  Total: 0.8808
+
+Testing  Loss:  Total: 0.2632
+Testing Accuracy:  Total: 0.8585
+Testing Precision:  Total: 0.9275
+Testing Recall:  Total: 0.8279
+Testing F1:  Total: 0.8749
+
+Epoch 17: #Train=10031  #Test=2508  Time=0.8635
+Training  Loss:  Total: 0.2644
+Training Accuracy:  Total: 0.8646
+Training Precision:  Total: 0.9038
+Training Recall:  Total: 0.8656
+Training F1:  Total: 0.8843
+
+Testing  Loss:  Total: 0.2906
+Testing Accuracy:  Total: 0.8401
+Testing Precision:  Total: 0.9493
+Testing Recall:  Total: 0.7738
+Testing F1:  Total: 0.8526
+
+Epoch 18: #Train=10031  #Test=2508  Time=0.8622
+Training  Loss:  Total: 0.2715
+Training Accuracy:  Total: 0.8595
+Training Precision:  Total: 0.9166
+Training Recall:  Total: 0.8415
+Training F1:  Total: 0.8775
+
+Testing  Loss:  Total: 0.2519
+Testing Accuracy:  Total: 0.8740
+Testing Precision:  Total: 0.9180
+Testing Recall:  Total: 0.8666
+Testing F1:  Total: 0.8916
+
+Epoch 19: #Train=10031  #Test=2508  Time=0.8604
+Training  Loss:  Total: 0.2528
+Training Accuracy:  Total: 0.8705
+Training Precision:  Total: 0.9144
+Training Recall:  Total: 0.8642
+Training F1:  Total: 0.8886
+
+Testing  Loss:  Total: 0.2600
+Testing Accuracy:  Total: 0.8640
+Testing Precision:  Total: 0.9270
+Testing Recall:  Total: 0.8386
+Testing F1:  Total: 0.8806
+
+Epoch 20: #Train=10031  #Test=2508  Time=0.8630
+Training  Loss:  Total: 0.2504
+Training Accuracy:  Total: 0.8744
+Training Precision:  Total: 0.9181
+Training Recall:  Total: 0.8672
+Training F1:  Total: 0.8919
+
+Testing  Loss:  Total: 0.2535
+Testing Accuracy:  Total: 0.8712
+Testing Precision:  Total: 0.9200
+Testing Recall:  Total: 0.8592
+Testing F1:  Total: 0.8886
+
+Epoch 21: #Train=10031  #Test=2508  Time=0.8642
+Training  Loss:  Total: 0.2441
+Training Accuracy:  Total: 0.8784
+Training Precision:  Total: 0.9220
+Training Recall:  Total: 0.8701
+Training F1:  Total: 0.8953
+
+Testing  Loss:  Total: 0.2490
+Testing Accuracy:  Total: 0.8808
+Testing Precision:  Total: 0.9043
+Testing Recall:  Total: 0.8953
+Testing F1:  Total: 0.8998
+
+Epoch 22: #Train=10031  #Test=2508  Time=0.8575
+Training  Loss:  Total: 0.2459
+Training Accuracy:  Total: 0.8769
+Training Precision:  Total: 0.9118
+Training Recall:  Total: 0.8791
+Training F1:  Total: 0.8951
+
+Testing  Loss:  Total: 0.2592
+Testing Accuracy:  Total: 0.8600
+Testing Precision:  Total: 0.9355
+Testing Recall:  Total: 0.8225
+Testing F1:  Total: 0.8754
+
+Epoch 23: #Train=10031  #Test=2508  Time=0.8640
+Training  Loss:  Total: 0.2427
+Training Accuracy:  Total: 0.8790
+Training Precision:  Total: 0.9236
+Training Recall:  Total: 0.8694
+Training F1:  Total: 0.8957
+
+Testing  Loss:  Total: 0.2535
+Testing Accuracy:  Total: 0.8728
+Testing Precision:  Total: 0.9196
+Testing Recall:  Total: 0.8626
+Testing F1:  Total: 0.8902
+
+Epoch 24: #Train=10031  #Test=2508  Time=0.8615
+Training  Loss:  Total: 0.2430
+Training Accuracy:  Total: 0.8810
+Training Precision:  Total: 0.9154
+Training Recall:  Total: 0.8824
+Training F1:  Total: 0.8986
+
+Testing  Loss:  Total: 0.2645
+Testing Accuracy:  Total: 0.8569
+Testing Precision:  Total: 0.9378
+Testing Recall:  Total: 0.8145
+Testing F1:  Total: 0.8718
+
+Epoch 25: #Train=10031  #Test=2508  Time=0.8612
+Training  Loss:  Total: 0.2428
+Training Accuracy:  Total: 0.8787
+Training Precision:  Total: 0.9245
+Training Recall:  Total: 0.8679
+Training F1:  Total: 0.8953
+
+Testing  Loss:  Total: 0.2612
+Testing Accuracy:  Total: 0.8740
+Testing Precision:  Total: 0.9151
+Testing Recall:  Total: 0.8699
+Testing F1:  Total: 0.8919
+
+Epoch 26: #Train=10031  #Test=2508  Time=0.8624
+Training  Loss:  Total: 0.2486
+Training Accuracy:  Total: 0.8741
+Training Precision:  Total: 0.9217
+Training Recall:  Total: 0.8626
+Training F1:  Total: 0.8912
+
+Testing  Loss:  Total: 0.2533
+Testing Accuracy:  Total: 0.8780
+Testing Precision:  Total: 0.8937
+Testing Recall:  Total: 0.9033
+Testing F1:  Total: 0.8985
+
+Epoch 27: #Train=10031  #Test=2508  Time=0.8589
+Training  Loss:  Total: 0.2433
+Training Accuracy:  Total: 0.8782
+Training Precision:  Total: 0.9207
+Training Recall:  Total: 0.8712
+Training F1:  Total: 0.8953
+
+Testing  Loss:  Total: 0.2573
+Testing Accuracy:  Total: 0.8780
+Testing Precision:  Total: 0.8896
+Testing Recall:  Total: 0.9086
+Testing F1:  Total: 0.8990
+
+Epoch 28: #Train=10031  #Test=2508  Time=0.8648
+Training  Loss:  Total: 0.2362
+Training Accuracy:  Total: 0.8838
+Training Precision:  Total: 0.9200
+Training Recall:  Total: 0.8822
+Training F1:  Total: 0.9007
+
+Testing  Loss:  Total: 0.2539
+Testing Accuracy:  Total: 0.8569
+Testing Precision:  Total: 0.9419
+Testing Recall:  Total: 0.8105
+Testing F1:  Total: 0.8713
+
+Epoch 29: #Train=10031  #Test=2508  Time=0.8553
+Training  Loss:  Total: 0.2359
+Training Accuracy:  Total: 0.8810
+Training Precision:  Total: 0.9286
+Training Recall:  Total: 0.8676
+Training F1:  Total: 0.8970
+
+Testing  Loss:  Total: 0.2388
+Testing Accuracy:  Total: 0.8812
+Testing Precision:  Total: 0.9238
+Testing Recall:  Total: 0.8732
+Testing F1:  Total: 0.8978
+
+Epoch 30: #Train=10031  #Test=2508  Time=0.8558
+Training  Loss:  Total: 0.2374
+Training Accuracy:  Total: 0.8793
+Training Precision:  Total: 0.9238
+Training Recall:  Total: 0.8697
+Training F1:  Total: 0.8960
+
+Testing  Loss:  Total: 0.2465
+Testing Accuracy:  Total: 0.8772
+Testing Precision:  Total: 0.9293
+Testing Recall:  Total: 0.8599
+Testing F1:  Total: 0.8933
+
+Epoch 31: #Train=10031  #Test=2508  Time=0.8557
+Training  Loss:  Total: 0.2323
+Training Accuracy:  Total: 0.8858
+Training Precision:  Total: 0.9257
+Training Recall:  Total: 0.8794
+Training F1:  Total: 0.9020
+
+Testing  Loss:  Total: 0.2470
+Testing Accuracy:  Total: 0.8716
+Testing Precision:  Total: 0.9324
+Testing Recall:  Total: 0.8466
+Testing F1:  Total: 0.8874
+
+Epoch 32: #Train=10031  #Test=2508  Time=0.8602
+Training  Loss:  Total: 0.2275
+Training Accuracy:  Total: 0.8888
+Training Precision:  Total: 0.9267
+Training Recall:  Total: 0.8839
+Training F1:  Total: 0.9048
+
+Testing  Loss:  Total: 0.2521
+Testing Accuracy:  Total: 0.8700
+Testing Precision:  Total: 0.9361
+Testing Recall:  Total: 0.8399
+Testing F1:  Total: 0.8854
+
+Epoch 33: #Train=10031  #Test=2508  Time=0.8547
+Training  Loss:  Total: 0.2455
+Training Accuracy:  Total: 0.8745
+Training Precision:  Total: 0.9209
+Training Recall:  Total: 0.8642
+Training F1:  Total: 0.8917
+
+Testing  Loss:  Total: 0.2721
+Testing Accuracy:  Total: 0.8792
+Testing Precision:  Total: 0.8794
+Testing Recall:  Total: 0.9246
+Testing F1:  Total: 0.9015
+
+Epoch 34: #Train=10031  #Test=2508  Time=0.8562
+Training  Loss:  Total: 0.2275
+Training Accuracy:  Total: 0.8881
+Training Precision:  Total: 0.9237
+Training Recall:  Total: 0.8861
+Training F1:  Total: 0.9045
+
+Testing  Loss:  Total: 0.2530
+Testing Accuracy:  Total: 0.8624
+Testing Precision:  Total: 0.9459
+Testing Recall:  Total: 0.8165
+Testing F1:  Total: 0.8765
+
+Epoch 35: #Train=10031  #Test=2508  Time=0.8558
+Training  Loss:  Total: 0.2269
+Training Accuracy:  Total: 0.8867
+Training Precision:  Total: 0.9322
+Training Recall:  Total: 0.8739
+Training F1:  Total: 0.9021
+
+Testing  Loss:  Total: 0.2958
+Testing Accuracy:  Total: 0.8704
+Testing Precision:  Total: 0.8498
+Testing Recall:  Total: 0.9513
+Testing F1:  Total: 0.8977
+
+Epoch 36: #Train=10031  #Test=2508  Time=0.8522
+Training  Loss:  Total: 0.2191
+Training Accuracy:  Total: 0.8936
+Training Precision:  Total: 0.9267
+Training Recall:  Total: 0.8926
+Training F1:  Total: 0.9093
+
+Testing  Loss:  Total: 0.2389
+Testing Accuracy:  Total: 0.8796
+Testing Precision:  Total: 0.9248
+Testing Recall:  Total: 0.8692
+Testing F1:  Total: 0.8961
+
+Epoch 37: #Train=10031  #Test=2508  Time=0.8528
+Training  Loss:  Total: 0.2139
+Training Accuracy:  Total: 0.8952
+Training Precision:  Total: 0.9357
+Training Recall:  Total: 0.8856
+Training F1:  Total: 0.9099
+
+Testing  Loss:  Total: 0.2491
+Testing Accuracy:  Total: 0.8880
+Testing Precision:  Total: 0.9247
+Testing Recall:  Total: 0.8846
+Testing F1:  Total: 0.9042
+
+Epoch 38: #Train=10031  #Test=2508  Time=0.8552
+Training  Loss:  Total: 0.2204
+Training Accuracy:  Total: 0.8964
+Training Precision:  Total: 0.9274
+Training Recall:  Total: 0.8969
+Training F1:  Total: 0.9119
+
+Testing  Loss:  Total: 0.2550
+Testing Accuracy:  Total: 0.8652
+Testing Precision:  Total: 0.9408
+Testing Recall:  Total: 0.8266
+Testing F1:  Total: 0.8800
+
+Epoch 39: #Train=10031  #Test=2508  Time=0.8598
+Training  Loss:  Total: 0.2221
+Training Accuracy:  Total: 0.8841
+Training Precision:  Total: 0.9382
+Training Recall:  Total: 0.8629
+Training F1:  Total: 0.8989
+
+Testing  Loss:  Total: 0.2490
+Testing Accuracy:  Total: 0.8888
+Testing Precision:  Total: 0.9024
+Testing Recall:  Total: 0.9126
+Testing F1:  Total: 0.9075
+
+Epoch 40: #Train=10031  #Test=2508  Time=0.8537
+Training  Loss:  Total: 0.2118
+Training Accuracy:  Total: 0.8974
+Training Precision:  Total: 0.9320
+Training Recall:  Total: 0.8936
+Training F1:  Total: 0.9124
+
+Testing  Loss:  Total: 0.2347
+Testing Accuracy:  Total: 0.8768
+Testing Precision:  Total: 0.9369
+Testing Recall:  Total: 0.8512
+Testing F1:  Total: 0.8920
