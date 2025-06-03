@@ -17,6 +17,5 @@ dependencies:
   - scipy
   - pip
   - scikit-learn
-  - pip:
-    - pod5
+  - pod5
 
