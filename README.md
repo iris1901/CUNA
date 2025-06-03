@@ -43,6 +43,7 @@ CUNA/
 │ ├── data/
 │     └── new.pod5
 │     └── new.bam
+│ ├── CUNA.py
 │ ├── utils.py
 │ ├── detect.py
 │ ├── test_output/
