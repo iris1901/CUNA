@@ -67,7 +67,7 @@ if __name__ == '__main__':
         
     t=time.time()
 
-    print('%s: Starting DeepMod2.' %str(datetime.datetime.now()), flush=True)
+    print('%s: Starting CUNA.' %str(datetime.datetime.now()), flush=True)
             
     if not args.output:
         args.output=os.getcwd()
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
         with open(os.path.join(args.output, 'args'), 'w') as file:
             file.write('Command: python %s\n\n\n' % (' '.join(sys.argv)))
-            file.write('------Parameters Used For Running DeepMod2------\n')
+            file.write('------Parameters Used For Running CUNA------\n')
             for k in vars(args):
                 file.write('{}: {}\n'.format(k, vars(args)[k]))
 
