@@ -527,7 +527,7 @@ if __name__=='__main__':
 
     with open(os.path.join(args.model_save_path, 'args'), 'w') as file:
         file.write('Command: python %s\n\n\n' % (' '.join(sys.argv)))
-        file.write('------Parameters Used For Running DeepMod2------\n')
+        file.write('------Parameters Used For Running CUNA------\n')
         for k in vars(args):
             file.write('{}: {}\n'.format(k, vars(args)[k]))
 
