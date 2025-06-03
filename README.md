@@ -29,8 +29,8 @@ CUNA/
 │ ├── train_models.py
 │ ├── utils.py
 │ ├── reference_genome/
-|     └── genome_fasta.fa
-│     └── genome_fasta.fai
+|     └── GRCh38.fa
+│     └── GRCh38.fa.fai
 │ ├── features_output/
 │     └── args
 │     └── output.features.X.npz
