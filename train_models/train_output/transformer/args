@@ -1,14 +1,14 @@
-Command: python ${INPUT_DIR}/train/train_models.py --mixed_training_dataset ${INPUT_DIR}/mod/features/mixed/ --validation_type split --validation_fraction 0.1 --model_save_path ${OUTPUT_DIR}/mod/models/mixed_transformer --model_type transformer --embedding_type one_hot --num_layers 2 --dim_feedforward 256 --num_fc 128 --fc_type middle --embedding_dim 16 --pe_dim 16 --pe_type fixed --nhead 4 --epochs 35 --batch_size 512 --lr 0.0002 --l2_coef 0.001 --weights auto --seed 0
+Command: python ${INPUT_DIR}/CUNA/train_models/train_models.py --mixed_training_dataset ${INPUT_DIR}/CUNA/train_models/features_output/ --validation_type split --validation_fraction 0.1 --model_save_path ${INPUT_DIR}/CUNA/train_models/train_output/transformer --model_type transformer --embedding_type one_hot --num_layers 2 --dim_feedforward 256 --num_fc 128 --fc_type middle --embedding_dim 16 --pe_dim 16 --pe_type fixed --nhead 4 --epochs 35 --batch_size 512 --lr 0.0002 --l2_coef 0.001 --weights auto --seed 0
 
 
 ------Parameters Used For Running CUNA------
-mixed_training_dataset: ['${INPUT_DIR}/mod/features/mixed/']
+mixed_training_dataset: ['${INPUT_DIR}/CUNA/train_models/features_output/']
 validation_type: split
 validation_fraction: 0.1
 validation_dataset: None
 prefix: model
 weights: auto
-model_save_path: ${OUTPUT_DIR}/mod/models/mixed_transformer
+model_save_path: ${INPUT_DIR}/CUNA/train_models/train_output/transformer
 epochs: 35
 batch_size: 512
 retrain: None
