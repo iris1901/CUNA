@@ -28,16 +28,9 @@ CUNA/
 │ ├── generate_features.py
 │ ├── train_models.py
 │ ├── utils.py
-│ ├── data/
+│ ├── reference_genome/
 |     └── genome_fasta.fa
 │     └── genome_fasta.fai
-│     └── bam_files/
-|         └── dna.bam
-│     └── raw_data/
-|         └── signal_files/
-|             └── deamination.pod5
-│         └── label_files/
-|             └── mixed_list
 │ ├── features_output/
 │     └── args
 │     └── output.features.X.npz
