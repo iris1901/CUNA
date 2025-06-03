@@ -196,7 +196,7 @@ python ${INPUT_DIR}/CUNA/train_models/generate_features.py \
   --file_type pod5 \
   --threads 4 \
   --output ${INPUT_DIR}/CUNA/train_models/features_output/ \
-  --pos_list ${INPUT_DIR}/CUNA/simulate_scripts/output/mixed_list.txt \
+  --pos_list ${INPUT_DIR}/CUNA/simulate_scripts/output/mixed_list \
   --window 10 \
   --seq_type dna
 ```
