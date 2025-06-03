@@ -46,6 +46,7 @@ CUNA/
 │ ├── CUNA.py
 │ ├── utils.py
 │ ├── detect.py
+│ ├── models.py
 │ ├── test_output/
 │     └── output.bam
 │     └── output.per_read
