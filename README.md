@@ -20,10 +20,15 @@ CUNA/
 │     └── dna_sorted.bam.bai
 │ ├── simulate_deamination_signals.py
 │ ├── simulate_deamination_signals_verif.py
+│ ├── statistics.py
 │ ├── output/
 │     └── mixed_list
 │     └── deamination.pod5
 │     └── log.txt
+│     └── dna_stats.csv
+│     └── rna_stats.csv
+│     └── deamination_pod5_figure
+│     └── signal_distribution
 ├── train_models/
 │ ├── generate_features.py
 │ ├── train_models.py
