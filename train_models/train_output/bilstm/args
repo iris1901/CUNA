@@ -1,14 +1,14 @@
-Command: python ${INPUT_DIR}/train/train_models.py --mixed_training_dataset ${INPUT_DIR}/mod/features/mixed/ --validation_type split --validation_fraction 0.2 --model_save_path ${INPUT_DIR}/mod/models/mixed_bilstm --model_type bilstm --embedding_type one_hot --num_layers 2 --num_fc 128 --fc_type middle --dim_feedforward 256 --embedding_dim 16 --epochs 40 --batch_size 512 --lr 0.0005 --l2_coef 0.0001 --weights auto --seed 0
+Command: python ${INPUT_DIR}/CUNA/train_models/train_models.py --mixed_training_dataset ${INPUT_DIR}/CUNA/train_models/features_output/ --validation_type split --validation_fraction 0.2 --model_save_path ${INPUT_DIR}/CUNA/train_models/train_output/bilstm --model_type bilstm --embedding_type one_hot --num_layers 2 --num_fc 128  --fc_type middle --dim_feedforward 256 --embedding_dim 16 --epochs 40 --batch_size 512 --lr 0.0005 --l2_coef 0.0001 --weights auto --seed 0
 
 
 ------Parameters Used For Running CUNA------
-mixed_training_dataset: ['${INPUT_DIR}/mod/features/mixed/']
+mixed_training_dataset: ['${INPUT_DIR}/CUNA/train_models/features_output/']
 validation_type: split
 validation_fraction: 0.2
 validation_dataset: None
 prefix: model
 weights: auto
-model_save_path: ${INPUT_DIR}/mod/models/mixed_bilstm
+model_save_path: ${INPUT_DIR}/CUNA/train_models/train_output/bilstm
 epochs: 40
 batch_size: 512
 retrain: None
