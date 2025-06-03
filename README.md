@@ -179,14 +179,14 @@ python ${INPUT_DIR}/CUNA/simulate_scripts/simulate_deamination_signals_verif.py 
 We will generate:
 
 - A new POD5 file that simulates cytosine deamination events (C→U) typically found in ancient DNA, by replacing the signal at selected cytosine sites with uracil signals extracted from RNA.
-- A mixed_list.txt file used in training contains one genomic position per line, with the following format:
+- A `mixed_list.txt` file used in training contains one genomic position per line, with the following format:
     - `contig`: Chromosome or scaffold name from the reference genome
     - `position`: 0-based genomic coordinate of the base of interest
     - `strand`: Either `+` or `-`
     - `label`: 1 for uracil (deaminated cytosine), 0 for canonical thymine
 
 ## Step 2: Generate Training Features
-Once we have simulated cytosine deaminations (C→U) and produced the corresponding mixed_list.txt, we extract features from the modified signals using the script generate_features.py. We will generate features separately for the sample by providing signal POD5 file as --input, BAM file as --bam and a list of positions with modified/unmodified labels as --pos_list and use --threads NUM_THREADS to speed up feature generation. In this case, we will use a window size of 10, which means how many bases before and after each base position of interest (from pos_list) to include in feature generation. These features will later be used to train a deep learning model capable of distinguishing deaminated C→U sites from natural T bases.
+Once we have simulated cytosine deaminations (C→U) and produced the corresponding `mixed_list.txt`, we extract features from the modified signals using the script `generate_features.py`. We will generate features for the sample by providing signal POD5 file as --input, BAM file as --bam and a list of positions with modified/unmodified labels as --pos_list and use --threads NUM_THREADS to speed up feature generation. In this case, we will use a window size of 10, which means how many bases before and after each base position of interest (from pos_list) to include in feature generation. These features will later be used to train a deep learning model capable of distinguishing deaminated C→U sites from natural T bases.
 
 This structure allows the pipeline to train a binary classifier that distinguishes between truly unmodified thymines and uracils resulting from cytosine damage.
 
@@ -206,17 +206,14 @@ The output folder will contain .npz files with the extracted features and labels
 
 ## Step 3: Model Training (BiLSTM and Transformer)
 
-In this step, we train neural networks to detect cytosine deamination (C→U) events using the features generated in Step 2. The training is performed using the train_models.py script, which supports two architectures:
+In this step, we train neural networks to detect cytosine deamination (C→U) events using the features generated in Step 2. The training is performed using the `train_models.py` script, which supports two architectures:
 
-- BiLSTM (Bidirectional Long Short-Term Memory) – a recurrent model suitable for capturing temporal dependencies in the signal,
-- Transformer – an attention-based model better suited for learning long-range interactions in both signal and sequence context.
+- BiLSTM (Bidirectional Long Short-Term Memory) – a recurrent model suitable for capturing temporal dependencies in the signal
+- Transformer – an attention-based model better suited for learning long-range interactions in both signal and sequence context
 
-Both models take as input:
-- the one-hot encoded sequence context (±10 bases),
-- the resampled raw signal window,
-- the binary label (1 = uracil, 0 = thymine).
+Both models take as input the one-hot encoded sequence context (±10 bases), the resampled raw signal window and the binary label (1 = uracil, 0 = thymine).
 
-They are trained to output a modification probability for each sample. You can find a full list of options using python ${DeepMod2_DIR}/train/train_models.py --help command. In this demo we will train:
+They are trained to output a modification probability for each sample. You can find a full list of options using python ${INPUT_DIR}/CUNA/train_models/train_models.py --help command. In this demo we will train:
 
 ```bash
 python ${INPUT_DIR}/CUNA/train_models/train_models.py \
