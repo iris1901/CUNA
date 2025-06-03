@@ -658,7 +658,7 @@ def verify_modifications_in_all_reads(pod5_path, bam_path, inserted_sites_path, 
 
 # =========================== MAIN EXECUTION ===========================
 
-# Step 1: Extract U signals from RNA and insert them into C positions in DNA
+# Extract U signals from RNA and insert them into C positions in DNA
 resampled_signals = insert_U_into_C_general(
     dna_pod5_path=DNA_POD5_PATH,
     dna_bam_path=DNA_BAM_PATH,
