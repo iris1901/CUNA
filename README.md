@@ -301,6 +301,8 @@ The detection script generates:
 Each prediction corresponds to a T base in the BAM file. The model will estimate whether that T originated from a true thymine or a deaminated cytosine (uracil), based on the signal pattern and context.
 The --motif T 0 argument tells the model to evaluate every T at position 0 of the window. The --mod_symbol U indicates that the predicted modification corresponds to uracil.
 
+NOTE: All outputs presented in this repository —including performance metrics, model checkpoints, visualizations of signal distributions, and detection results— were generated using the exact configurations and commands provided throughout this README. This ensures complete reproducibility of the experiments.
+
 ## Acknowledgements
 
 This project is based on [DeepMod2](https://github.com/WGLab/DeepMod2), developed by Wang Genomics Lab.
