@@ -1,0 +1,26 @@
+All output will also be logged to: log.txt
+Intensity shift to apply: 207.74169921875
+
+[RNA] Searching for U with any pattern...
+0it [00:00, ?it/s]13it [00:00, 1695.99it/s]
+Resampled candidate U signals: 1000
+
+[DNA] Inserting U signals into C positions...
+0it [00:00, ?it/s]8it [00:00, 73.81it/s]19it [00:00, 92.28it/s]26it [00:00, 95.04it/s]
+
+Total Cs replaced with U signals: 1000
+Modified POD5 saved to: temp.pod5
+Total reads in the modified POD5: 26
+
+Generating file with modified coordinates...
+File saved: temp_list.txt
+Total modified positions recorded: 1000
+
+Modifying all reads that cover the positions in temp_list.txt...
+Fixing reads: 0it [00:00, ?it/s]Fixing reads: 4it [00:00, 37.84it/s]Fixing reads: 10it [00:00, 43.39it/s]Fixing reads: 15it [00:00, 42.05it/s]Fixing reads: 22it [00:00, 45.79it/s]Fixing reads: 26it [00:00, 44.69it/s]
+Fixed reads saved to: final.pod5
+
+Generating balanced mixed_list.txt...
+Scanning BAM for unmodified T: 0it [00:00, ?it/s]Scanning BAM for unmodified T: 26it [00:00, 299.41it/s]
+mixed_list.txt created with 1000 modified and 1000 unmodified entries.
+Temporary files removed.
