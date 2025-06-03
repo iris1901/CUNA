@@ -40,7 +40,7 @@ CUNA/
 │     └── args
 │     └── model.log
 ├── test/
-│ ├── data/
+│ ├── test_data/
 │     └── new.pod5
 │     └── new.bam
 │ ├── CUNA.py
