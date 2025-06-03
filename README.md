@@ -137,41 +137,39 @@ Before simulating uracil insertions, you can explore the characteristics of the 
 We use a helper script (estatistics.py) that extracts base-level statistics from both DNA and RNA sources, and generates a CSV summary.
 
 ```bash
-python estatistics.py \
-  --pod5_dna ${INPUT_DIR}/pod5/dna.pod5 \
-  --bam_dna ${INPUT_DIR}/bam/dna.bam \
-  --pod5_rna ${INPUT_DIR}/pod5/rna.pod5 \
-  --bam_rna ${INPUT_DIR}/bam/rna.bam \
-  --output ${OUTPUT_DIR}/estatistics.csv
+python ${INPUT_DIR}/CUNA/simulate_scripts/statistics.py \
+  --pod5_dna ${INPUT_DIR}/CUNA/simulate_scripts/dna.pod5 \
+  --bam_dna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam \
+  --pod5_rna ${INPUT_DIR}/CUNA/simulate_scripts/rna.pod5 \
+  --bam_rna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/rna.bam \
+  --output ${INPUT_DIR}/CUNA/simulate_scripts/output/statistics.csv
 ```
 
 Since no real ancient DNA POD5 is available, we **simulate uracil-induced damage** by:
 
 - Extracting U signals from RNA POD5.
 - Inserting those signals in place of cytosines in DNA POD5 at randomly chosen sites.
-- Respecting empirical estimates of deamination rates (~3–10% C→U).
+- Respecting empirical estimates of deamination rates (~3–9% C→U).
 - Maintaining total signal length to preserve BAM compatibility.
 - Generating a corresponding `mixed_list.txt` with modified and unmodified positions.
 
-### Example Command
-
 ```bash
-python simulate_deamination_signals.py \
-  --pod5_dna /Users/iris/Desktop/transf_U_to_C/DNA_can.pod5 \
-  --bam_dna /Users/iris/Desktop/transf_U_to_C/bam_files/DNA.bam \
-  --pod5_rna /Users/iris/Desktop/transf_U_to_C/RNA.pod5 \
-  --bam_rna /Users/iris/Desktop/transf_U_to_C/bam_files/RNA.bam \
+python ${INPUT_DIR}/CUNA/simulate_scripts/simulate_deamination_signals.py \
+  --pod5_dna ${INPUT_DIR}/CUNA/simulate_scripts/DNA_can.pod5 \
+  --bam_dna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/DNA.bam \
+  --pod5_rna ${INPUT_DIR}/CUNA/simulate_scripts/RNA.pod5 \
+  --bam_rna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/RNA.bam \
 ```
 (Optional) To ensure that uracil signals were inserted correctly and signal lengths were preserved, you can use an alternative version of the simulation script that includes automatic verification steps
 
 ```bash
-python simulate_deamination_signals_verif.py \
-  --dna_pod5 ${INPUT_DIR}/pod5/dna.pod5 \
-  --rna_pod5 ${INPUT_DIR}/pod5/rna.pod5 \
-  --dna_bam ${INPUT_DIR}/bam/dna.bam \
-  --rna_bam ${INPUT_DIR}/bam/rna.bam \
-  --output_dir ${OUTPUT_DIR} \
-  --log ${OUTPUT_DIR}/logs/log.txt
+python ${INPUT_DIR}/CUNA/simulate_scripts/simulate_deamination_signals_verif.py \
+  --dna_pod5 ${INPUT_DIR}/CUNA/simulate_scripts/dna.pod5 \
+  --rna_pod5 ${INPUT_DIR}/CUNA/simulate_scripts/rna.pod5 \
+  --dna_bam ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam \
+  --rna_bam ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/rna.bam \
+  --output_dir ${INPUT_DIR}/CUNA/simulate_scripts/output/ \
+  --log  ${INPUT_DIR}/CUNA/simulate_scripts/output/log.txt
 ```
 
 We will generate:
@@ -186,14 +184,14 @@ Once we have simulated cytosine deaminations (C→U) and produced the correspond
 This step generates a dataset of numerical features representing the raw signal and sequence context around each position of interest (both uracils and true thymines). These features will later be used to train a deep learning model capable of distinguishing deaminated C→U sites from natural T bases.
 
 ```bash
-python ${INPUT_DIR}/DeepMod2/train/generate_features.py \
-  --bam ${INPUT_DIR}/bam/all_reads.bam \
-  --input ${INPUT_DIR}/pod5/dna_with_U_signals.pod5 \
-  --ref ${INPUT_DIR}/fasta/genome.fa \
+python ${INPUT_DIR}/CUNA/train_models/generate_features.py \
+  --bam ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam \
+  --input ${INPUT_DIR}/CUNA/simulate_scripts/output/deamination.pod5 \
+  --ref ${INPUT_DIR}/CUNA/train_models/reference_genome/GRCh38.fa \
   --file_type pod5 \
   --threads 4 \
-  --output ${OUTPUT_DIR}/features/mixed/ \
-  --pos_list ${INPUT_DIR}/mixed_lists/mixed_list.txt \
+  --output ${INPUT_DIR}/CUNA/train_models/features_output/ \
+  --pos_list ${INPUT_DIR}/CUNA/simulate_scripts/output/mixed_list.txt \
   --window 10 \
   --seq_type dna
 ```
@@ -214,11 +212,11 @@ Both models take as input:
 They are trained to output a modification probability for each sample.
 
 ```bash
-python ${INPUT_DIR}/DeepMod2/train/train_models.py \
-  --mixed_training_dataset ${OUTPUT_DIR}/features/mixed/ \
+python ${INPUT_DIR}/CUNA/train_models/train_models.py \
+  --mixed_training_dataset ${INPUT_DIR}/CUNA/train_models/features_output/ \
   --validation_type split \
   --validation_fraction 0.2 \
-  --model_save_path ${OUTPUT_DIR}/models/mixed_bilstm \
+  --model_save_path ${INPUT_DIR}/CUNA/train_models/train_output/bilstm \
   --model_type bilstm \
   --embedding_type one_hot \
   --num_layers 2 \
@@ -234,11 +232,11 @@ python ${INPUT_DIR}/DeepMod2/train/train_models.py \
   --seed 0
 ```
 ```bash
-python ${INPUT_DIR}/DeepMod2/train/train_models.py \
-  --mixed_training_dataset ${OUTPUT_DIR}/features/mixed/ \
+python ${INPUT_DIR}/CUNA/train_models/train_models.py \
+  --mixed_training_dataset ${INPUT_DIR}/CUNA/train_models/features_output/ \
   --validation_type split \
   --validation_fraction 0.1 \
-  --model_save_path ${OUTPUT_DIR}/models/mixed_transformer \
+  --model_save_path ${INPUT_DIR}/CUNA/train_models/train_output/transformer \
   --model_type transformer \
   --embedding_type one_hot \
   --num_layers 2 \
@@ -249,7 +247,7 @@ python ${INPUT_DIR}/DeepMod2/train/train_models.py \
   --pe_dim 16 \
   --pe_type fixed \
   --nhead 4 \
-  --epochs 40 \
+  --epochs 35 \
   --batch_size 512 \
   --lr 0.0002 \
   --l2_coef 0.001 \
@@ -273,17 +271,17 @@ To prepare the BAM file used for detection, basecall the modified POD5 file with
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --emit-moves \
   --model dna_r10.4.1_e8.2_400bps_hac@v4.3.0 \
-  ${INPUT_DIR}/test/nuevo.pod5 > ${INPUT_DIR}/test/test.bam
+  ${INPUT_DIR}/CUNA/test/test_data/test.pod5 > ${INPUT_DIR}/CUNA/test/test_data/test.bam
 ```
 
 The following command runs the detector on the test POD5 file using the trained model:
 
 ```bash
-python ${INPUT_DIR}/DeepMod2/deepmod2.py detect \
-  --model ${OUTPUT_DIR}/models/mixed_bilstm/model.cfg,${OUTPUT_DIR}/models/mixed_bilstm/model.epoch40.pt \
-  --input ${INPUT_DIR}/test/partes_pod5/parte_01.pod5 \
-  --bam ${INPUT_DIR}/test/test.bam \
-  --output ${OUTPUT_DIR}/test/predictions/ \
+python ${INPUT_DIR}/CUNA/CUNA.py detect \
+  --model ${INPUT_DIR}/CUNA/train_models/train_output/bilstm/model.cfg,${INPUT_DIR}/CUNA/train_models/train_output/bilstm/model.epoch40.pt \
+  --input ${INPUT_DIR}/CUNA/test/test_data/test.pod5 \
+  --bam ${INPUT_DIR}/CUNA/test/test_data/test.bam \
+  --output ${INPUT_DIR}/CUNA/test/test_output/ \
   --motif T 0 \
   --mod_symbol U \
   --threads 4
@@ -303,20 +301,3 @@ The --motif T 0 argument tells the model to evaluate every T at position 0 of th
 This project is based on [DeepMod2](https://github.com/WGLab/DeepMod2), developed by Wang Genomics Lab.
 
 Parts of the code and training pipeline were adapted from the original DeepMod2 repository to support the simulation and detection of cytosine deamination events in ancient DNA.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
