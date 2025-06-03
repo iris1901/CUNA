@@ -1,10 +1,10 @@
-mixed_training_dataset: ['/Users/iris/Desktop/aDNA_modificados2_sinref/mod/features/mixed/']
+mixed_training_dataset: ['${INPUT_DIR}/CUNA/train_models/features_output/']
 validation_type: split
 validation_fraction: 0.2
 validation_dataset: None
 prefix: model
 weights: auto
-model_save_path: /Users/iris/Desktop/aDNA_modificados2_sinref/mod/models/mixed_bilstm
+model_save_path: ${INPUT_DIR}/CUNA/train_models/train_output/bilstm
 epochs: 40
 batch_size: 512
 retrain: None
