@@ -69,7 +69,7 @@ intensity_shift = dna_mean - rna_mean
 
 print(f"Intensity shift to apply: {intensity_shift}")
 
-def insert_U_into_C_general(pod5_dna_path, bam_dna_path, pod5_rna_path, bam_rna_path, output_pod5_path, n=1600):
+def insert_U_into_C_general(pod5_dna_path, bam_dna_path, pod5_rna_path, bam_rna_path, output_pod5_path, n=1000):
     # Extract U from RNA with any pattern, resampled
     print("\n[RNA] Searching for U with any pattern...")
 
@@ -440,14 +440,14 @@ def insert_into_all_reads(pod5_modified_path, bam_path, inserted_sites_path, res
 
     print(f"Fixed reads saved to: {output_final_path}")
 
-# ======================================================
+# ======================== MAIN EXECUTION ==============================
 resampled_signals = insert_U_into_C_general(
     pod5_dna_path=POD5_PATH,
     bam_dna_path=BAM_PATH,
     pod5_rna_path=POD5_RNA_PATH,
     bam_rna_path=BAM_RNA_PATH,
     output_pod5_path= args.temp_pod5,
-    n=1500)
+    n=1000)
 
 insert_into_all_reads(
     pod5_modified_path= args.temp_pod5,
