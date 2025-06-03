@@ -61,8 +61,8 @@ CUNA/
 We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) for environment isolation.
 
 ```bash
-micromamba create -n cuna_env -f requirements.yml
-micromamba activate cuna_env
+micromamba create -n CUNA -f requirements.yml
+micromamba activate CUNA
 ```
 
 ##   Download Software Packges
@@ -96,11 +96,11 @@ We then use Dorado for basecalling, with --emit-moves to obtain alignment betwee
 
 ```bash
 # DNA POD5
-wget -qO- https://github.com/WGLab/DeepMod2/files/14368872/sample.pod5.tar.gz| tar xzf - -C ${INPUT_DIR}/nanopore_raw_data
+wget -qO- https://github.com/WGLab/DeepMod2/files/14368872/sample.pod5.tar.gz| tar xzf - -C ${INPUT_DIR}/CUNA/simulate_scripts
 
 # RNA BLOW5
 wget https://github.com/lrslab/nanoCEM/raw/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5 \
-  -O ${INPUT_DIR}/pod5/rna.blow5
+  -O ${INPUT_DIR}/CUNA/simulate_scripts/rna.blow5
 
 # Convert BLOW5 to POD5
 pip install blue-crab
@@ -108,8 +108,8 @@ blue-crab s2p rna.blow5 -o rna.pod5
 
 # Genome Reference (for DNA only)
 # Before DNA basecalling, we must download a reference genome for anchored alignment:
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz -O -| gunzip -c > ${INPUT_DIR}/GRCh38.fa
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai -O ${INPUT_DIR}/GRCh38.fa.fai
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz -O -| gunzip -c > ${INPUT_DIR}/CUNA/train_models/reference_genome/GRCh38.fa
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai -O ${INPUT_DIR}/CUNA/train_models/reference_genome/GRCh38.fa.fai
 ```
 
 RNA reads are basecalled without alignment, using the Dorado RNA model:
@@ -118,7 +118,7 @@ ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --model rna004_130bps_hac@v5.2.0 \
   --emit-moves \
   --recursive \
-  ${INPUT_DIR}/pod5/rna.pod5 > ${OUTPUT_DIR}/bam/rna.bam
+  ${INPUT_DIR}/CUNA/simulate_scripts/rna.pod5 > ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/rna.bam
 ```
 For DNA, we perform reference-anchored basecalling and alignment:
 ```bash
@@ -126,8 +126,8 @@ ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --model dna_r10.4.1_e8.2_400bps_hac@v4.3.0 \
   --emit-moves \
   --recursive \
-  --reference ${INPUT_DIR}/fasta/genome.fa \
-  ${INPUT_DIR}/pod5/dna.pod5 > ${OUTPUT_DIR}/bam/dna.bam
+  --reference ${INPUT_DIR}/CUNA/train_models/reference_genome/GRCh38.fa \
+  ${INPUT_DIR}/CUNA/simulate_scripts/dna.pod5 > ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam
 ```
 
 ## Step 1: Simulate Ancient DNA from POD5
