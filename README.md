@@ -70,14 +70,14 @@ micromamba create -n CUNA -f requirements.yml
 micromamba activate CUNA
 ```
 
-##   Download Software Packges
-
 ```bash
 # Install CUNA
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
 ```
 
-In this project, we use Dorado, the official basecaller from Oxford Nanopore Technologies, to perform signal-to-sequence conversion for both DNA and RNA datasets.
+##   Download Software Packges
+
+In this project, we use [Dorado](https://github.com/nanoporetech/dorado.git), the official basecaller from Oxford Nanopore Technologies, to perform signal-to-sequence conversion for both DNA and RNA datasets.
 We will download the Dorado basecaller (v0.5.3) along with the appropriate pre-trained basecalling models for each data type and flow cells.
 Installation instructions for both Linux and macOS (Apple Silicon) are provided below.
 
