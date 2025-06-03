@@ -76,7 +76,10 @@ micromamba activate CUNA
 # Install CUNA
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
 ```
-Download the basecaller for your platform (macOS, Linux...):
+
+In this project, we use Dorado, the official basecaller from Oxford Nanopore Technologies, to perform signal-to-sequence conversion for both DNA and RNA datasets.
+We will download the Dorado basecaller (v0.5.3) along with the appropriate pre-trained basecalling models for each data type and flow cells.
+Installation instructions for both Linux and macOS (Apple Silicon) are provided below.
 
 ```bash
 # For Linux:
@@ -94,10 +97,13 @@ ${INPUT_DIR}/dorado-0.5.3-osx-arm64/bin/dorado download --model rna004_130bps_ha
 
 To begin, we perform basecalling on two raw signal datasets:
 
-- A DNA POD5 file generated from DeepMod2 of modern DNA using an R10.4.1 flow cell.
-- An RNA BLOW5 file publicly available from nanoCEM, which we converted to POD5 for compatibility.
+- A DNA POD5 file generated from [DeepMod2](https://github.com/WGLab/DeepMod2/files/14368872/sample.pod5.tar.gz) of modern DNA using an R10.4.1 flow cell.
+- An RNA BLOW5 file publicly available from [nanoCEM](https://github.com/lrslab/nanoCEM/raw/3f7ab5f001448e4f15ef5d17dad04ca6507394bb/example/data/wt/file.blow5), which we converted to POD5 for compatibility.
 
-We then use Dorado for basecalling, with --emit-moves to obtain alignment between signal and sequence.
+The data can be downloaded from the official repositories or go to the simulate_scripts folder where they are already downloaded.
+We then use Dorado for basecalling, with --emit-moves to create move tables in addition to basecalls.
+
+If you want to download through the terminal: 
 
 ```bash
 # DNA POD5
@@ -134,12 +140,11 @@ ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --reference ${INPUT_DIR}/CUNA/train_models/reference_genome/GRCh38.fa \
   ${INPUT_DIR}/CUNA/simulate_scripts/dna.pod5 > ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam
 ```
+The resulting BAM files provide a precise alignment between the raw signal and the basecalled sequence. This correlation enables the accurate localization of each base’s signal segment using the move table.
 
 ## Step 1: Simulate Ancient DNA from POD5
 
-Before simulating uracil insertions, you can explore the characteristics of the raw signals in the DNA and RNA POD5 files. This helps validate signal consistency and understand nucleotide-specific patterns prior to resampling or insertion.
-
-We use a helper script (estatistics.py) that extracts base-level statistics from both DNA and RNA sources, and generates a CSV summary.
+(Optional) Before simulating uracil insertions, you can explore the characteristics of the raw signals in the DNA and RNA POD5 files. This helps validate signal consistency and understand nucleotide-specific patterns prior to resampling or insertion. We use a helper script (statistics.py) that extracts base-level statistics from both DNA and RNA sources, and generates a CSV summary.
 
 ```bash
 python ${INPUT_DIR}/CUNA/simulate_scripts/statistics.py \
@@ -147,16 +152,10 @@ python ${INPUT_DIR}/CUNA/simulate_scripts/statistics.py \
   --bam_dna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/dna.bam \
   --pod5_rna ${INPUT_DIR}/CUNA/simulate_scripts/rna.pod5 \
   --bam_rna ${INPUT_DIR}/CUNA/simulate_scripts/bam_files/rna.bam \
-  --output ${INPUT_DIR}/CUNA/simulate_scripts/output/statistics.csv
+  --output ${INPUT_DIR}/CUNA/simulate_scripts/output/
 ```
 
-Since no real ancient DNA POD5 is available, we **simulate uracil-induced damage** by:
-
-- Extracting U signals from RNA POD5.
-- Inserting those signals in place of cytosines in DNA POD5 at randomly chosen sites.
-- Respecting empirical estimates of deamination rates (~3–9% C→U).
-- Maintaining total signal length to preserve BAM compatibility.
-- Generating a corresponding `mixed_list.txt` with modified and unmodified positions.
+Since no real ancient DNA POD5 is available, we simulate uracil-induced damage by extracting U signals from RNA POD5, inserting those signals in place of cytosines in DNA POD5 at the beginning and end of DNA fragments more frequently, respecting empirical estimates of deamination rates (~3–9% C→U), maintaining total signal length to preserve BAM compatibility and generating a corresponding `mixed_list.txt` with modified and unmodified positions.
 
 ```bash
 python ${INPUT_DIR}/CUNA/simulate_scripts/simulate_deamination_signals.py \
@@ -179,14 +178,17 @@ python ${INPUT_DIR}/CUNA/simulate_scripts/simulate_deamination_signals_verif.py 
 
 We will generate:
 
-A new POD5 file that simulates cytosine deamination events (C→U) typically found in ancient DNA, by replacing the signal at selected cytosine sites with uracil signals extracted from RNA,
-A mixed_list.txt file that includes: the genomic positions where uracils have been inserted (label 1), and a set of real thymine positions found in the original DNA data (label 0), used as unmodified controls.
-These outputs are used directly in Step 2.
+- A new POD5 file that simulates cytosine deamination events (C→U) typically found in ancient DNA, by replacing the signal at selected cytosine sites with uracil signals extracted from RNA.
+- A mixed_list.txt file used in training contains one genomic position per line, with the following format:
+    - `contig`: Chromosome or scaffold name from the reference genome
+    - `position`: 0-based genomic coordinate of the base of interest
+    - `strand`: Either `+` or `-`
+    - `label`: 1 for uracil (deaminated cytosine), 0 for canonical thymine
 
 ## Step 2: Generate Training Features
-Once we have simulated cytosine deaminations (C→U) and produced the corresponding mixed_list.txt, we extract features from the modified signals using the adapted DeepMod2 script generate_features.py.
+Once we have simulated cytosine deaminations (C→U) and produced the corresponding mixed_list.txt, we extract features from the modified signals using the script generate_features.py. We will generate features separately for the sample by providing signal POD5 file as --input, BAM file as --bam and a list of positions with modified/unmodified labels as --pos_list and use --threads NUM_THREADS to speed up feature generation. In this case, we will use a window size of 10, which means how many bases before and after each base position of interest (from pos_list) to include in feature generation. These features will later be used to train a deep learning model capable of distinguishing deaminated C→U sites from natural T bases.
 
-This step generates a dataset of numerical features representing the raw signal and sequence context around each position of interest (both uracils and true thymines). These features will later be used to train a deep learning model capable of distinguishing deaminated C→U sites from natural T bases.
+This structure allows the pipeline to train a binary classifier that distinguishes between truly unmodified thymines and uracils resulting from cytosine damage.
 
 ```bash
 python ${INPUT_DIR}/CUNA/train_models/generate_features.py \
@@ -200,7 +202,7 @@ python ${INPUT_DIR}/CUNA/train_models/generate_features.py \
   --window 10 \
   --seq_type dna
 ```
-The output folder will contain .npz files with the extracted features and labels. These files are ready to be used in model training (see Step 3).
+The output folder will contain .npz files with the extracted features and labels. These files are ready to be used in model training.
 
 ## Step 3: Model Training (BiLSTM and Transformer)
 
@@ -214,7 +216,7 @@ Both models take as input:
 - the resampled raw signal window,
 - the binary label (1 = uracil, 0 = thymine).
 
-They are trained to output a modification probability for each sample.
+They are trained to output a modification probability for each sample. You can find a full list of options using python ${DeepMod2_DIR}/train/train_models.py --help command. In this demo we will train:
 
 ```bash
 python ${INPUT_DIR}/CUNA/train_models/train_models.py \
@@ -236,6 +238,7 @@ python ${INPUT_DIR}/CUNA/train_models/train_models.py \
   --weights auto \
   --seed 0
 ```
+
 ```bash
 python ${INPUT_DIR}/CUNA/train_models/train_models.py \
   --mixed_training_dataset ${INPUT_DIR}/CUNA/train_models/features_output/ \
@@ -259,18 +262,13 @@ python ${INPUT_DIR}/CUNA/train_models/train_models.py \
   --weights auto \
   --seed 0
 ```
-Each model training run produces:
-- model.cfg: best checkpoint saved,
-- model.epochX.pt
-- args.txt: a record of all parameters used for reproducibility,
-- model.log: epoch-by-epoch training and validation metrics,
-- metrics : final performance metrics such as Accuracy, F1, AUROC, AUPRC, and MCC.
+Each model training run produces a long file model.log, epoch-by-epoch training and validation metrics, X saved model checkpoints model.epochX.pt, a model configuration file model.cfg, a file args.txt record of all parameters used for reproducibility and metrics such as accuracy, F1, loss, recall, precision, AUROC, AUPRC and MCC. When we want to use this model, we have to provide a saved checkpoint and the model configuration file to CUNA.
 
 ## Step 4: Modification Detection on Test Data
 
-In this final step, we use the trained model to detect uracil modifications in a new DNA dataset
+In this final step, we use the trained model to detect uracil modifications in a new DNA dataset.
 
-To prepare the BAM file used for detection, basecall the modified POD5 file without the --reference option:
+To prepare the BAM file used for detection, basecall a new modified POD5 file without the --reference option:
 
 ```bash
 ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
@@ -278,6 +276,10 @@ ${INPUT_DIR}/dorado-0.5.3-linux-x64/bin/dorado basecaller \
   --model dna_r10.4.1_e8.2_400bps_hac@v4.3.0 \
   ${INPUT_DIR}/CUNA/test/test_data/test.pod5 > ${INPUT_DIR}/CUNA/test/test_data/test.bam
 ```
+We will now use the model model.epoch40.pt and model.cfg on the test dataset using CUNA's detect module. We will provide the model as --model PATH_TO_MODEL_CONFIGURATION_FILE,PATH_TO_MODEL_CHECKPOINT where we provide the paths to model configuration file and model checkpoint separated by a comma to --model parameter.
+
+Each prediction corresponds to a T base in the BAM file. The model will estimate whether that T originated from a true thymine or a deaminated cytosine (uracil), based on the signal pattern and context.
+The --motif T 0 argument tells the model to evaluate every T at position 0 of the window. The --mod_symbol U indicates that the predicted modification corresponds to uracil.
 
 The following command runs the detector on the test POD5 file using the trained model:
 
@@ -297,9 +299,6 @@ The detection script generates:
 - output.per_site: per-site predictions of modification probability
 - output.bam: BAM file annotated with uracil modification tags
 - args.txt: record of the command and options used.
-
-Each prediction corresponds to a T base in the BAM file. The model will estimate whether that T originated from a true thymine or a deaminated cytosine (uracil), based on the signal pattern and context.
-The --motif T 0 argument tells the model to evaluate every T at position 0 of the window. The --mod_symbol U indicates that the predicted modification corresponds to uracil.
 
 NOTE: All outputs presented in this repository —including performance metrics, model checkpoints, visualizations of signal distributions, and detection results— were generated using the exact configurations and commands provided throughout this README. This ensures complete reproducibility of the experiments.
 
