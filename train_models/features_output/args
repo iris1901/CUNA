@@ -1,0 +1,19 @@
+Command: python ${INPUT_DIR}/train/generate_features.py --bam ${INPUT_DIR}/data/bam_files/all_reads.bam --input ${INPUT_DIR}/data/data_download/signal_files/muestra.pod5 --ref ${INPUT_DIR}/data/GRCh38.fa --file_type pod5 --threads 4 --output ${INPUT_DIR}/mod/features/mixed/ --pos_list ${INPUT_DIR}/data/data_download/label_files/mixed_list --window 10 --seq_type dna
+
+
+------Parameters Used For Running CUNA------
+bam: ${INPUT_DIR}/data/bam_files/all_reads.bam
+window: 10
+prefix: output
+input: ${INPUT_DIR}/data/data_download/signal_files/muestra.pod5
+output: ${INPUT_DIR}/mod/features/mixed/
+threads: 4
+div_threshold: 0.25
+reads_per_chunk: 100000
+ref: ${INPUT_DIR}/data/GRCh38.fa
+pos_list: ${INPUT_DIR}/data/data_download/label_files/mixed_list
+file_type: pod5
+seq_type: dna
+norm_type: mad
+chrom: None
+length_cutoff: 0
