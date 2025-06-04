@@ -4,7 +4,7 @@ CUNA (Cytosine Uracil Neural Algorithm) is a deep learning-based pipeline for de
 This pipeline is specifically designed for studying ancient DNA samples, where cytosines often spontaneously deaminate to uracils due to age-related chemical damage.
 
 <p align="center">
-  <img src="images/framework.png" alt="CUNA Framework" width="600"/>
+  <img src="framework/framework.png" alt="CUNA Framework" width="600"/>
 </p>
 
 ## Project Structure
