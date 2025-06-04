@@ -16,16 +16,16 @@ from sklearn.metrics import roc_auc_score, average_precision_score, matthews_cor
 
 # One-hot encoding for base or reference sequences.
 class OneHotEncode(nn.Module):
-    def __init__(self, num_classes: int):
-        super().__init__()
+    def _init_(self, num_classes: int):
+        super()._init_()
         self.num_classes=num_classes
     def forward(self, x: Tensor) -> Tensor:
         return F.one_hot(x, self.num_classes)
 
 # Applies embedding only to the read sequence (one-hot or learnable).
 class ReadEmbed(nn.Module):
-    def __init__(self, embedding_dim, embedding_type):
-        super().__init__()
+    def _init_(self, embedding_dim, embedding_type):
+        super()._init_()
         
         self.embedding_depth=0
         
@@ -44,8 +44,8 @@ class ReadEmbed(nn.Module):
 
 # Fixed positional encoding using sine/cosine functions.
 class PositionalEncoding(nn.Module):
-    def __init__(self, pe_dim: int, max_len: int):
-        super().__init__()
+    def _init_(self, pe_dim: int, max_len: int):
+        super()._init_()
         position = torch.arange(max_len).unsqueeze(1)
         div_term = torch.exp(torch.arange(0, pe_dim, 2) * (-math.log(pe_dim) / (pe_dim)))
         pe = torch.zeros(1, max_len, pe_dim)
@@ -60,8 +60,8 @@ class PositionalEncoding(nn.Module):
 
 # Learnable positional encoding using embedding layers.
 class PositionalEmbedding(nn.Module):
-    def __init__(self, pe_dim: int, max_len: int):
-        super().__init__()
+    def _init_(self, pe_dim: int, max_len: int):
+        super()._init_()
         pos=torch.arange(max_len)
         self.register_buffer('pos', pos)
         self.pe=nn.Embedding(max_len, pe_dim)
@@ -74,8 +74,8 @@ class PositionalEmbedding(nn.Module):
 
 # Positional encoding as directly learnable parameters.
 class PositionalParameter(nn.Module):
-    def __init__(self, pe_dim: int, max_len: int):
-        super().__init__()
+    def _init_(self, pe_dim: int, max_len: int):
+        super()._init_()
         
         self.pe=torch.nn.Parameter(torch.randn(max_len, pe_dim)) 
 
@@ -86,8 +86,8 @@ class PositionalParameter(nn.Module):
 
 # Positional encoding as directly learnable parameters.
 class ClassifierMiddle(nn.Module):
-    def __init__(self, in_dim: int, num_fc: int, model_len: int):
-        super().__init__()
+    def _init_(self, in_dim: int, num_fc: int, model_len: int):
+        super()._init_()
         self.mid = model_len//2
         self.fc = nn.Linear(in_dim, num_fc)
         self.out = nn.Linear(num_fc,1)
@@ -99,8 +99,8 @@ class ClassifierMiddle(nn.Module):
     
 # Classifier that flattens the entire sequence and uses all the information.
 class ClassifierAll(nn.Module):
-    def __init__(self, in_dim: int, num_fc: int):
-        super().__init__()
+    def _init_(self, in_dim: int, num_fc: int):
+        super()._init_()
         self.fc = nn.Linear(in_dim, num_fc)
         self.out = nn.Linear(num_fc,1)
         
@@ -112,8 +112,8 @@ class ClassifierAll(nn.Module):
 
 # BiLSTM-based model to learn sequences with optional embedding and classification layer.
 class BiLSTM(nn.Module):
-    def __init__(self, model_dims, num_layers, dim_feedforward, num_fc, embedding_dim, embedding_type, fc_type):
-        super(BiLSTM, self).__init__()
+    def _init_(self, model_dims, num_layers, dim_feedforward, num_fc, embedding_dim, embedding_type, fc_type):
+        super(BiLSTM, self)._init_()
         
         self.emb=ReadEmbed(embedding_dim, embedding_type)
         self.model_len=model_dims[0]
@@ -136,8 +136,8 @@ class BiLSTM(nn.Module):
 
 # Transformer-based model with positional encoding and embedding, followed by a classification layer.
 class TransformerModel(nn.Module):
-    def __init__(self, model_dims, num_layers, dim_feedforward, num_fc, embedding_dim, embedding_type, include_ref, pe_dim, nhead, pe_type, fc_type):
-        super(TransformerModel, self).__init__()
+    def _init_(self, model_dims, num_layers, dim_feedforward, num_fc, embedding_dim, embedding_type, include_ref, pe_dim, nhead, pe_type, fc_type):
+        super(TransformerModel, self)._init_()
         
         self.emb=ReadEmbed(embedding_dim, embedding_type)
         self.model_len=model_dims[0]
@@ -383,12 +383,18 @@ def train(training_dataset, validation_dataset, validation_type, validation_frac
                     'optimizer_state_dict': optimizer.state_dict()
                 }, model_path)
 
+    def smooth(y, box_pts=3):
+        pad = box_pts // 2
+        y_padded = np.pad(y, (pad, pad), mode='edge') 
+        box = np.ones(box_pts)/box_pts
+        return np.convolve(y_padded, box, mode='valid') 
+
     epochs_range = range(1, len(metrics_history['train_f1']) + 1)
 
     for metric in ['loss', 'accuracy', 'precision', 'recall', 'f1']:
         plt.figure()
-        plt.plot(epochs_range, metrics_history[f'train_{metric}'], label=f'Train {metric.title()}')
-        plt.plot(epochs_range, metrics_history[f'test_{metric}'], label=f'Test {metric.title()}')
+        plt.plot(epochs_range, smooth(metrics_history[f'train_{metric}']), label=f'Train {metric.title()}')
+        plt.plot(epochs_range, smooth(metrics_history[f'test_{metric}']), label=f'Test {metric.title()}')
         plt.xlabel('Epoch')
         plt.ylabel(metric.title())
         plt.title(f'{metric.title()} per Epoch')
@@ -420,9 +426,9 @@ def train(training_dataset, validation_dataset, validation_type, validation_frac
     return net
 
 # Main entry point of the script.
-# Parses training arguments, configures the model, and runs the `train` function.
+# Parses training arguments, configures the model, and runs the train function.
 # Also saves the used parameters and ensures reproducibility using a random seed.
-if __name__=='__main__':
+if _name=='main_':
     start_time = time.time()
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
