@@ -3,7 +3,8 @@ package:
   version: "0.1.0"
 
 source:
-  path: ../..
+  url: https://github.com/iris1901/CUNA/archive/refs/tags/v0.1.0.tar.gz
+  sha256: eb2abb15c1e3e2047151439facafd824b5e0c0a265e8a6b7e0ed2a2f9a9e3ba6
 
 build:
   noarch: python
@@ -42,8 +43,8 @@ about:
   license_file: LICENSE
   summary: "CUNA: Cytosine Uracil Neural Algorithm for ancient DNA damage detection using nanopore signals"
   description: |
-    CUNA is a deep learning pipeline for detecting cytosine deamination (C→U) events in ancient DNA, using raw nanopore signals.
-    It includes feature extraction, model training, and modification detection.
+    CUNA is a deep learning pipeline for detecting cytosine deamination (C→U) events in ancient DNA using raw nanopore signals.
+    The pipeline includes feature extraction, model training, and detection modules. It is compatible with Dorado basecalling and POD5 files.
 
 extra:
   recipe-maintainers:
