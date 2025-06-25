@@ -59,7 +59,6 @@ CUNA/
 │           └── args
 ├── recipes/
 │ ├── cuna/
-|     └── build.sh
 |     └── meta.yaml
 ├── config.yml
 ```
@@ -68,16 +67,21 @@ CUNA/
 
 We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) to create a isolated environment, ensuring full reproducibility of dependencies across platforms.
 
-Follow these steps to set up the environment and install CUNA.
+Follow these steps to set up the environment and install cuna.
 
 ```bash
-# Create a new environment using the provided dependency file
-micromamba create -n CUNA -f requirements.yml
+micromamba create -n CUNA -c bioconda -c conda-forge cuna
 micromamba activate CUNA
 ```
-
+The version of pod5 available on Bioconda is outdated and may cause compatibility issues.
+To ensure CUNA works correctly, please unistall bioconda version and install the latest version of pod5 via pip inside the same environment
 ```bash
-# Clone the CUNA repository into your working directory
+micromamba uninstall --force --no-prune-deps pod5
+pip install pod5
+```
+
+If you wish to inspect the source code, access the example scripts, or use the dataset that was employed to train and evaluate the models, you can clone the repository with:
+```bash
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
 # This will generate the necessary `cuna.egg-info/` metadata folder
 cd path/to/CUNA
