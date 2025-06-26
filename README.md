@@ -74,7 +74,7 @@ We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/user_guid
 Follow these steps to set up the environment and install cuna.
 
 ```bash
-micromamba create -n CUNA -c bioconda -c conda-forge cuna
+micromamba create -n CUNA -c conda-forge -c bioconda cuna
 micromamba activate CUNA
 ```
 
