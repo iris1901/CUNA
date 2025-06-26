@@ -1,3 +1,7 @@
+[![Bioconda Release Date](https://anaconda.org/bioconda/cuna/badges/latest_release_date.svg)](https://anaconda.org/bioconda/cuna)
+[![Bioconda Platforms](https://anaconda.org/bioconda/cuna/badges/platforms.svg)](https://anaconda.org/bioconda/cuna)
+[![Bioconda License](https://anaconda.org/bioconda/cuna/badges/license.svg)](https://anaconda.org/bioconda/cuna)
+
 # CUNA
 CUNA (Cytosine Uracil Neural Algorithm) is a deep learning-based pipeline adapted from the [DeepMod2](https://github.com/WGLab/DeepMod2) framework for detecting cytosine deamination events in ancient DNA sequenced with Oxford Nanopore Technologies.
 
@@ -72,12 +76,6 @@ Follow these steps to set up the environment and install cuna.
 ```bash
 micromamba create -n CUNA -c bioconda -c conda-forge cuna
 micromamba activate CUNA
-```
-The version of pod5 available on Bioconda is outdated and may cause compatibility issues.
-To ensure CUNA works correctly, please unistall bioconda version and install the latest version of pod5 via pip inside the same environment
-```bash
-micromamba uninstall --force --no-prune-deps pod5
-pip install pod5
 ```
 
 If you wish to inspect the source code, access the example scripts, or use the dataset that was employed to train and evaluate the models, you can clone the repository with:
