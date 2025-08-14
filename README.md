@@ -78,6 +78,13 @@ micromamba create -n CUNA -c conda-forge -c bioconda cuna
 micromamba activate CUNA
 ```
 
+Due to the fact that Bioconda does not support version `0.3.23` of `pod5`, it is necessary to install it manually via `pip` with the following commands:
+
+```bash
+micromamba remove --force --no-prune-deps pod5 lib-pod5
+pip install pod5==0.3.23
+```
+
 If you wish to inspect the source code, access the example scripts, or use the dataset that was employed to train and evaluate the models, you can clone the repository with:
 ```bash
 git clone https://github.com/iris1901/CUNA.git ${INPUT_DIR}/CUNA
@@ -109,6 +116,9 @@ These commands will download and decompress the GRCh38 reference genome and its 
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.gz -O -| gunzip -c > ${INPUT_DIR}/CUNA/cuna/data/train_data/GRCh38.fa
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna.fai -O ${INPUT_DIR}/CUNA/cuna/data/train_data/GRCh38.fa.fai
 ```
+
+The example training dataset [`dna.bam`](cuna/data/train_data/dna.bam), [`deamination.pod5`](cuna/data/train_data/deamination.pod5), and [`mixed_list.txt`](cuna/data/train_data/mixed_list.txt) is already included in the repository, and you can download them by clicking the links.
+
 
 ## Step 1: Generate Training Features
 We extract features from the modified signals using the script `generate_features.py`. We will generate features for the sample by providing signal POD5 file as --input, BAM file as --bam and a list of positions with modified/unmodified labels as --pos_list and use --threads NUM_THREADS to speed up feature generation. 
