@@ -71,18 +71,11 @@ CUNA/
 
 We recommend using [Micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) to create a isolated environment, ensuring full reproducibility of dependencies across platforms.
 
-Follow these steps to set up the environment and install cuna.
+Follow these steps to set up the environment and install cuna with the required `pod5` version (`0.3.23`):.
 
 ```bash
-micromamba create -n CUNA -c conda-forge -c bioconda cuna
+micromamba create -n CUNA -c conda-forge -c bioconda cuna pod5=0.3.23
 micromamba activate CUNA
-```
-
-Due to the fact that Bioconda does not support version `0.3.23` of `pod5`, it is necessary to install it manually via `pip` with the following commands:
-
-```bash
-micromamba remove --force --no-prune-deps pod5 lib-pod5
-pip install pod5==0.3.23
 ```
 
 If you wish to inspect the source code, access the example scripts, or use the dataset that was employed to train and evaluate the models, you can clone the repository with:
